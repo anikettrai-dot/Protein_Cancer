@@ -1,0 +1,30 @@
+# Virtual environment
+.venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# VS Code
+.vscode/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# ===== Large ML data (DO NOT PUSH) =====
+Protein_Project/dataset_images/
+Protein_Project/models_3/
+Protein_Project/raw_pdb/
+Protein_Project/results,cm, gr/
+Protein_Project/For Testing/
+
+# Generated files
+*.png
+*.jpg
+*.jpeg
+*.pdb
+*.h5
+*.pt
+*.ckpt
+*.csv
+*.tsv
