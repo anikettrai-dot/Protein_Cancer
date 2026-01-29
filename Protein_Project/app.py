@@ -45,7 +45,8 @@ except ImportError:
 @dataclass
 class Config:
     """Centralized configuration"""
-    PROJECT_ROOT: str = r"D:\Protein_Cancer\Protein_Project"
+    # Dynamic project root calculation
+    PROJECT_ROOT: str = str(Path(__file__).parent.absolute())
     MODEL_DIR: str = None
     PREPROCESS_PATH: str = None
     

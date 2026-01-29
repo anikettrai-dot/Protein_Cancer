@@ -7,3 +7,8 @@ Pillow
 opencv-python-headless
 scikit-learn
 matplotlib
+timm
+py3Dmol
+biotite
+pytorch-grad-cam
+qrcode
