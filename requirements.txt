@@ -5,7 +5,7 @@ torchvision
 numpy
 pandas
 Pillow
-opencv-python-headless
+opencv-python
 scikit-learn
 matplotlib
 timm
