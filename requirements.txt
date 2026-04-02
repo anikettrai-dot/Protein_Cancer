@@ -5,13 +5,13 @@ torchvision
 numpy
 pandas
 Pillow
-opencv-python
+opencv-python-headless
 scikit-learn
 matplotlib
 timm
 py3Dmol
 biotite
-grad-cam
+ttach
 qrcode
 biopython
 tqdm
