@@ -9,12 +9,13 @@ from tqdm import tqdm
 import warnings
 
 # ---------------- CONFIG ----------------
-# Update these paths if needed
-RAW_PDB_DIR    = r"D:\Protein_Cancer\Protein_Project\raw_pdb"
-OUTPUT_IMG_DIR = r"D:\Protein_Cancer\Protein_Project\dataset_images"
-BIO_FEAT_PATH  = r"D:\Protein_Cancer\Protein_Project\bio_features.npy"
-META_JSON_PATH = r"D:\Protein_Cancer\Protein_Project\metadata.json"
-CANCER_ID_CSV  = r"D:\Protein_Cancer\Protein_Project\final_mapping.csv" # List of Cancer IDs
+# Dynamic paths for cross-platform compatibility
+SCRIPT_DIR     = Path(__file__).parent.absolute()
+RAW_PDB_DIR    = SCRIPT_DIR / "raw_pdb"
+OUTPUT_IMG_DIR = SCRIPT_DIR / "dataset_images"
+BIO_FEAT_PATH  = SCRIPT_DIR / "bio_features.npy"
+META_JSON_PATH = SCRIPT_DIR / "metadata.json"
+CANCER_ID_CSV  = SCRIPT_DIR / "final_mapping.csv" 
 
 IMG_SIZE        = 299        
 MAX_DIST        = 40.0       # for distance normalization
@@ -22,7 +23,10 @@ CONTACT_THRESH  = 8.0        # for contact map / density
 MIN_RESIDUES    = 10         # skip tiny fragments
 # ----------------------------------------
 
-os.makedirs(OUTPUT_IMG_DIR, exist_ok=True)
+def ensure_dirs():
+    """Ensure output directories exist, only called when needed"""
+    os.makedirs(str(OUTPUT_IMG_DIR), exist_ok=True)
+
 warnings.simplefilter('ignore')
 
 # ---------- 1. ROBUST ID LOADING ----------
@@ -46,7 +50,7 @@ def load_cancer_ids(csv_path):
 def extract_features(pdb_path):
     """Safely extracts CA coordinates, B-factors, and residues."""
     # Smart parser selection
-    parser = PDBParser(QUIET=True) if pdb_path.endswith(".pdb") else MMCIFParser(QUIET=True)
+    parser = PDBParser(QUIET=True) if str(pdb_path).endswith(".pdb") else MMCIFParser(QUIET=True)
     
     try:
         structure = parser.get_structure("prot", pdb_path)
@@ -127,24 +131,25 @@ def convert_single_pdb_to_image(pdb_path):
     return Image.fromarray(img)
 # ---------- MAIN PIPELINE ----------
 def main():
-    if not os.path.exists(RAW_PDB_DIR):
+    if not os.path.exists(str(RAW_PDB_DIR)):
         print(f"❌ Error: Input folder '{RAW_PDB_DIR}' not found.")
         return
 
-    cancer_ids = load_cancer_ids(CANCER_ID_CSV)
+    ensure_dirs()
+    cancer_ids = load_cancer_ids(str(CANCER_ID_CSV))
     
     metadata = {}
     bio_features = []
     
-    files = [f for f in os.listdir(RAW_PDB_DIR) if f.endswith((".pdb", ".cif"))]
+    files = [f for f in os.listdir(str(RAW_PDB_DIR)) if f.endswith((".pdb", ".cif"))]
     print(f"🚀 Processing {len(files)} files...")
     
     processed_count = 0
     
     for fname in tqdm(files):
-        pdb_path = os.path.join(RAW_PDB_DIR, fname)
+        pdb_path = os.path.join(str(RAW_PDB_DIR), fname)
         out_name = fname.replace(".pdb", ".png").replace(".cif", ".png")
-        out_path = os.path.join(OUTPUT_IMG_DIR, out_name)
+        out_path = os.path.join(str(OUTPUT_IMG_DIR), out_name)
 
         # 1. Determine Label
         # Check if ID is in our cancer list
@@ -175,9 +180,9 @@ def main():
 
     # Save Metadata
     if bio_features:
-        np.save(BIO_FEAT_PATH, np.vstack(bio_features))
+        np.save(str(BIO_FEAT_PATH), np.vstack(bio_features))
     
-    with open(META_JSON_PATH, "w") as f:
+    with open(str(META_JSON_PATH), "w") as f:
         json.dump(metadata, f, indent=4)
 
     print("\n✨ DONE!")

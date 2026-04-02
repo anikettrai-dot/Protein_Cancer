@@ -12,3 +12,5 @@ py3Dmol
 biotite
 pytorch-grad-cam
 qrcode
+biopython
+tqdm
