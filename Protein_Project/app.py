@@ -19,15 +19,7 @@ import torch.nn as nn
 from torchvision import models, transforms
 from PIL import Image
 import numpy as np
-import subprocess
-try:
-    import cv2
-except ImportError:
-    if "cv2" in sys.modules:
-        del sys.modules["cv2"]
-    subprocess.run([sys.executable, "-m", "pip", "uninstall", "-y", "opencv-python", "opencv-contrib-python", "opencv-python-headless"])
-    subprocess.run([sys.executable, "-m", "pip", "install", "opencv-python-headless"])
-    import cv2
+import cv2
 import timm
 import py3Dmol
 import matplotlib.pyplot as plt
