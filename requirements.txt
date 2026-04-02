@@ -1,4 +1,5 @@
 streamlit
+--extra-index-url https://download.pytorch.org/whl/cpu
 torch
 torchvision
 numpy
@@ -10,7 +11,7 @@ matplotlib
 timm
 py3Dmol
 biotite
-pytorch-grad-cam
+grad-cam
 qrcode
 biopython
 tqdm
