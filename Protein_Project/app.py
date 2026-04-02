@@ -25,7 +25,8 @@ try:
 except ImportError:
     if "cv2" in sys.modules:
         del sys.modules["cv2"]
-    subprocess.run([sys.executable, "-m", "pip", "uninstall", "-y", "opencv-python", "opencv-contrib-python"])
+    subprocess.run([sys.executable, "-m", "pip", "uninstall", "-y", "opencv-python", "opencv-contrib-python", "opencv-python-headless"])
+    subprocess.run([sys.executable, "-m", "pip", "install", "opencv-python-headless"])
     import cv2
 import timm
 import py3Dmol
